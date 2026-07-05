@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_example/screens/counter/view/counter_view.dart';
 import 'package:getx_example/screens/home_view/controller/home_controller.dart';
 import 'package:getx_example/screens/settings/view/setting_view.dart';
 
@@ -43,7 +44,11 @@ class HomeView extends StatelessWidget {
             ),
             Divider(color: Colors.black87),
             ListTile(leading: Icon(Icons.home), title: Text("Home")),
-            ListTile(leading: Icon(Icons.ac_unit), title: Text("Counter")),
+            ListTile(leading: Icon(Icons.ac_unit), title: Text("Counter"),
+            onTap: () {
+              Get.to(()=> CounterView());
+            },
+            ),
             ListTile(leading: Icon(Icons.person), title: Text("Profile")),
             ListTile(
               leading: Icon(Icons.settings),
