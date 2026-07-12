@@ -1,8 +1,25 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   final List todoList = [];
+  @override
+  onInit() {
+    super.onInit();
+    getTodoList();
+  }
+
+  getTodoList() async {
+    final response = await Dio().get("https://api.freeapi.app/api/v1/todos");
+    print(response.data);
+
+    for (var element in response.data["data"]) {
+      todoList.add(element["title"]);
+    }
+    
+    update();
+  }
 
   void addTodo(BuildContext context) {
     TextEditingController controller = TextEditingController();
