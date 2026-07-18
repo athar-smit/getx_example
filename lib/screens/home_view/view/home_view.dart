@@ -15,7 +15,6 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-
         leading: IconButton(
           onPressed: () {
             _scaffoldKey.currentState?.openDrawer();
@@ -44,10 +43,12 @@ class HomeView extends StatelessWidget {
             ),
             Divider(color: Colors.black87),
             ListTile(leading: Icon(Icons.home), title: Text("Home")),
-            ListTile(leading: Icon(Icons.ac_unit), title: Text("Counter"),
-            onTap: () {
-              Get.to(()=> CounterView());
-            },
+            ListTile(
+              leading: Icon(Icons.ac_unit),
+              title: Text("Counter"),
+              onTap: () {
+                Get.to(() => CounterView());
+              },
             ),
             ListTile(leading: Icon(Icons.person), title: Text("Profile")),
             ListTile(
@@ -58,7 +59,7 @@ class HomeView extends StatelessWidget {
                 //   context,
                 //   MaterialPageRoute(builder: (context) => SettingView()),
                 // );
-                Get.to(()=> SettingView());
+                Get.to(() => SettingView());
               },
             ),
           ],
@@ -90,12 +91,33 @@ class HomeView extends StatelessWidget {
                           child: Row(
                             children: [
                               Expanded(
-                                child: Text(
-                                  controller.todoList[index],
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.white,
-                                  ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      controller.todoList[index].title ?? "N/A",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      controller.todoList[index].description ??
+                                          "N/A",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      controller.todoList[index].createdAt
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               SizedBox(width: 20),

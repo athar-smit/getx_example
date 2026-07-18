@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_example/models/todo_data_model.dart';
 
 class HomeController extends GetxController {
-  final List todoList = [];
+  final List<TodoDetail> todoList = [];
   @override
   onInit() {
     super.onInit();
@@ -14,15 +15,29 @@ class HomeController extends GetxController {
     final response = await Dio().get("https://api.freeapi.app/api/v1/todos");
     print(response.data);
 
-    for (var element in response.data["data"]) {
-      todoList.add(element["title"]);
-    }
-    
+    todoList.clear();
+
+    todoList.addAll(TodoDataModel.fromJson(response.data).data);
+
     update();
   }
 
+  createTodo({required String title, required String description}) async {
+    await Dio().post(
+      "https://api.freeapi.app/api/v1/todos/",
+      data: {"description": description, "title": title},
+    );
+    await getTodoList();
+  }
+
+  deleteTodo({required String todoId}) async {
+    await Dio().delete("https://api.freeapi.app/api/v1/todos/${todoId}");
+    getTodoList();
+  }
+
   void addTodo(BuildContext context) {
-    TextEditingController controller = TextEditingController();
+    TextEditingController titleController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
     showDialog(
       context: context,
       builder: (context) {
@@ -39,11 +54,23 @@ class HomeController extends GetxController {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 TextField(
-                  controller: controller,
+                  controller: titleController,
+                  minLines: 1,
+                  maxLines: 2,
+                  decoration: InputDecoration(
+                    hintText: "Enter Title",
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                TextField(
+                  controller: descriptionController,
                   minLines: 4,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: "Write your text",
+                    hintText: "Write your description",
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black38),
                       borderRadius: BorderRadius.circular(12),
@@ -64,7 +91,10 @@ class HomeController extends GetxController {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          todoList.add(controller.text);
+                          createTodo(
+                            title: titleController.text,
+                            description: descriptionController.text,
+                          );
                           Navigator.pop(context);
                           update();
                         },
