@@ -30,9 +30,10 @@ class HomeController extends GetxController {
     await getTodoList();
   }
 
-  deleteTodo({required String todoId}) async {
-    await Dio().delete("https://api.freeapi.app/api/v1/todos/${todoId}");
-    getTodoList();
+  deleteTodo({required String? todoId}) async {
+    await Dio().delete("https://api.freeapi.app/api/v1/todos/$todoId");
+
+    await getTodoList();
   }
 
   void addTodo(BuildContext context) {

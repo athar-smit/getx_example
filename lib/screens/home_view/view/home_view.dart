@@ -126,7 +126,9 @@ class HomeView extends StatelessWidget {
                                 icon: Icon(Icons.edit, color: Colors.white),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  controller.deleteTodo(todoId: controller.todoList[index].id);
+                                },
                                 icon: Icon(Icons.delete, color: Colors.red),
                               ),
                             ],
